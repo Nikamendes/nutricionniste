@@ -1,63 +1,66 @@
 <?php
- 
-  require 'constant/functions.php';
-  require 'Back/langage.php';
-	require 'Front/recettes.php';
+require_once './Back/fonctions.php';
+require_once 'back/config.php';
+require 'Back/langage.php';
+  require_once './Back/fonctions.php';
     $langage= 'fr';
+   loadLangage ( $langage);
 
-    $recette= showRecettes($recettes);
-		loadLangage ( $langage);
 
+# On crée une variable qui va contenir le résultat des fonctions qu'on va appeler
+$result = '';
+if (isset($_GET['requete'])) {
+    $requete = $_GET['requete'];
+    switch ($requete) {
+		# Si c'est la fonction 1 qui est appelée
+        case 'requete1':
+            $result = requete1($conn);
+            break;
+		# Si c'est la fonction 2 qui est appelée
+        case 'requete2':
+            $result = requete2($conn);
+            break;
+		# Si la requête n'existe pas
+        default:
+            $result = 'Requête inconnue';
+            break;
+    }
+}
 ?>
-
 <html>
  <head>
+    <meta charset="utf-8" />
    <meta name="viewport" content="width=device-width,initial scale 1.0">
-  <meta charset="utf-8" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
   <title>Diététienne-Nutritionniste</title>
 
 
     </head>
-     <body>
-       
+
+
+    <body>
       <style>
-
-        html{
-          background-color:609A7D;
+        img{
+          margin-left:100px;
         }
-      p{
-        font-style:center;
-        color: blackgray;
-        text-align: justify;
-        text-decoration: justify;
-      }
+  
+        </style>
 
-      h1{
-        color: blue;
-      }
+              <?php renderMenu(); ?>
 
-      h2{
-        color:black;
-      }
+<div class="container">
+    <h1 class="mt-5">Bienvenue sur mon site</h1>  
 
-        h3{
-          color:black;
-        }
 
-     img {
-    height: 110px;
-    width: 100px;
-    background-image:none;
-    background-size: contain;
-    border: 50px;
-    border-radius: 20px 20px 20px 40px;
-    background-size: cover;
-    box-shadow: 10px 10px gray;
-}
-   }
-    </style>
-    
+    <?php if ($result): ?>
+        <h2 class="mt-5">Résultats de la requête</h2>
+        <?php echo $result; ?>
+    <?php endif; ?>
+</div>
        <img src="https://auchanetmoi.auchan.fr/api/v1/media_files/1395/media/798x449c" />
+       
     <?php 
        $headerTitle='Spaghettis au thon';
    
@@ -99,33 +102,21 @@ Choisissez-les complètes, elles seront encore meilleures pour la santé du fait
 
        <h2>Complement</h2>
        <p>Pour votre santé evité de grinhoté entre les repas</p>
-       
- <nav role="navigation">
- 
-     <a href="./Front/form.php" class="nav-items ">Envoyer le Formulaire</a>
-   
- </nav>
-      <form method='POST' action='form.php'>
-      login:<input type='text'name='login' value='Doe'>
-        <br>
-        email:<input tupe='text' name='email'>
-        <br>
-        age:<input type='checkebox' name='age'>
-        <br>
-        allergie:<input type='checkebox' name='allergie'>
-        <br>
-        rendez-vous:<input type='checkebox' name='Pris de Rendez-vous'>
-        <br>
-        <div classe="input-row">
-  <button id="connexion" 
-          type="button">Connexion</button>
-    
-      </form>
- 
-          
 
-   <script src="script.js"></script>
+       <!-- Ici on va inclure tous les scripts qu'on veut utiliser, comme JQuery, Bootstrap etc -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script>
+document.getElementById('requete1').addEventListener('click', function() {
+  window.location.href = '?requete=requete1';
+});
 
-    <footer>Droit de Auteur</footer>
+document.getElementById('requete2').addEventListener('click', function() {
+  window.location.href = '?requete=requete2';
+});
+</script>
+ <footer>Droit de Auteur</footer>
+
 </body>
 </html>
